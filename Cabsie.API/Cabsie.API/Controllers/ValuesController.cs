@@ -1,17 +1,29 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using Cabsie.API.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cabsie.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
     {
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        [Authorize]
+        public IActionResult Get()
         {
-            return new string[] { "value1", "value2" };
+            var data = Enumerable.Range(0, 5).Select(i =>
+                new UserVM()
+                {
+                    FirstName = $"First_{i:N2}",
+                    LastName = $"Last_{i:N2}",
+                    MiddleName = $"Mid_{i:N2}"
+                }
+            );
+            return Ok(data);
         }
 
         // GET api/values/5

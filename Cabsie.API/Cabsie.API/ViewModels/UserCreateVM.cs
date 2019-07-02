@@ -3,17 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Cabsie.API.Models
+namespace Cabsie.API.ViewModels
 {
-    public class UserVM
+    public class UserCreateVM
     {
-        public Guid Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string MiddleName { get; set; }
-        public UserType UserType { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
 
+        public UserType UserType { get; set; } = UserType.Passenger;
     }
 }

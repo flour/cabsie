@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Cabsie.API.Entities;
 using Cabsie.API.Models;
+using Cabsie.API.ViewModels;
 
 namespace Cabsie.API
 {
@@ -10,6 +10,7 @@ namespace Cabsie.API
         {
             CreateMap<User, UserVM>();
             CreateMap<User, UserCreateVM>();
+            CreateMap<RegisterVM, User>();
         }
     }
 }

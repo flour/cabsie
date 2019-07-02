@@ -1,56 +1,22 @@
-﻿using Cabsie.API.Entities;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
+﻿using Cabsie.API.Models;
 using System.Threading.Tasks;
 
 namespace Cabsie.API.Services
 {
     public interface IUsersRepository : IGenericRepository<User>
     {
-
+        Task<bool> HasUniqEmailAsync(string email);
+        Task<bool> HasUniqueUsernameAsync(string username);
     }
 
-    public class UsersRepository : IUsersRepository
+    public class UsersRepository : GenericRepository<User>, IUsersRepository
     {
-        private readonly AppDbContext _context;
-        public UsersRepository(AppDbContext context)
-        {
-            _context = context;
-        }
+        public UsersRepository(AppDbContext context) : base(context) { }
 
-        public void CreateItem(User item)
-        {
-            _context.Add(item);
-        }
+        public async Task<bool> HasUniqEmailAsync(string email)
+         => (await GetItemAsync(u => u.Email == email)) == null;
 
-        public async Task DeleteItemAsync(Guid id)
-        {
-            var user = await GetItemAsync(id);
-            if (user != null)
-            {
-                _context.Users.Remove(user);
-            }
-        }
-
-        public async Task<User> GetItemAsync(Guid id)
-        {
-            return await _context.Users.SingleOrDefaultAsync(u => u.Id == id);
-        }
-
-        public async Task<IEnumerable<User>> GetItemsAsync(int page = 1, int perPage = 10)
-        {
-            return await _context.Users.ToListAsync();
-        }
-
-        public async Task<bool> SaveAsync()
-        {
-            return await _context.SaveChangesAsync() >= 0;
-        }
-
-        public void UpdateItem(User item)
-        {
-            _context.Users.Update(item);
-        }
+        public async Task<bool> HasUniqueUsernameAsync(string username)
+         => (await GetItemAsync(u => u.Username == username)) == null;
     }
 }

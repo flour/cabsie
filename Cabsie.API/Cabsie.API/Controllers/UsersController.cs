@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Cabsie.API.Entities;
 using Cabsie.API.Models;
+using Cabsie.API.ViewModels;
 using Cabsie.API.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Cabsie.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -23,7 +23,7 @@ namespace Cabsie.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllUsersAsync()
         {
-            var result = await _repository.GetItemsAsync(0, 0);
+            var result = await _repository.GetAllAsync();
             return Ok(result);
         }
 

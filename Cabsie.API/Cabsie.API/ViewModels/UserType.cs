@@ -1,4 +1,4 @@
-﻿namespace Cabsie.API.Models
+﻿namespace Cabsie.API.ViewModels
 {
     public enum UserType
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Cabsie.API.Entities
+namespace Cabsie.API.Models
 {
     public class Track : BaseEntity
     {

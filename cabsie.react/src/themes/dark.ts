@@ -7,11 +7,15 @@ const darkTheme: ThemeOptions = {
   palette: {
     type: 'dark',
     primary: {
+      dark: deepOrange[900],
       main: deepOrange[900],
+      light: deepOrange[700],
       contrastText: '#fafafa',
     },
     secondary: {
+      dark: amber[900],
       main: amber[900],
+      light: amber[700],
       contrastText: '#fafafa',
     },
     background: {
