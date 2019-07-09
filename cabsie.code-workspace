@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "Cabsie.API"
+		},
+		{
+			"path": "Cabsie.Identity"
+		},
+		{
+			"path": "cabsie.react"
+		}
+	],
+	"settings": {
+		
+	}
+}

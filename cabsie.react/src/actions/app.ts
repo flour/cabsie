@@ -1,16 +1,16 @@
 import { InferValuetypes } from './common';
 
-export declare enum AppActionType {
-  SetDarkTheme = 'set.theme.dark',
-  SetLightTheme = 'set.theme.light'
+export const AppActionType = {
+  SET_THEME_DARK: 'set.theme.dark',
+  SET_THEME_LIGHT: 'set.theme.light'
 }
 
 const AppActions = {
   actionSetDarkTheme: () => ({
-    type: AppActionType.SetDarkTheme
+    type: AppActionType.SET_THEME_DARK
   }),
   actionSetLightTheme: () => ({
-    type: AppActionType.SetLightTheme
+    type: AppActionType.SET_THEME_LIGHT
   })
 };
 
