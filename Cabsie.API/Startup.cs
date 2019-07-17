@@ -8,9 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Logging;
 using Newtonsoft.Json.Converters;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Cabsie.API
@@ -27,40 +26,29 @@ namespace Cabsie.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            IdentityModelEventSource.ShowPII = true; 
             services.AddCors();
 
             services.AddDbContextPool<AppDbContext>(options =>
                 options.UseMySql(Configuration.GetConnectionString("CabsieDB"))
             );
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-                    {
-                        ValidateIssuer = false,
-                        ValidateAudience = false,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(
-                            Encoding.UTF8.GetBytes(Configuration.GetValue<string>("JWTSecretKey"))
-                        )
-                    };
-                    options.Events = new JwtBearerEvents { OnMessageReceived = OnMessageReceived };
-                });
+            services.AddAuthentication(options => {
+                options.DefaultScheme = "cookie";
+                options.DefaultChallengeScheme = "oidc";
+            })
+            .AddCookie("cookie")
+            .AddOpenIdConnect("oidc", options => {
+                options.Authority = "https://localhost:5011";
+                options.ClientId = "Cabsie.API";
+                options.SignInScheme = "cookie";
+            });
 
             services.AddScoped<IUsersRepository, UsersRepository>();
             // services.AddAutoMapper(typeof(Startup));
 
             var mappingConfig = new MapperConfiguration(mc => mc.AddProfile(new AppMapperProfile()));
             services.AddSingleton(mappingConfig.CreateMapper());
-
-            services.AddSingleton<IAuthService>(
-                new AuthService(
-                    Configuration.GetValue<string>("JWTSecretKey"),
-                    Configuration.GetValue<int>("JWTLifespan")
-                )
-            );
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
@@ -101,6 +89,7 @@ namespace Cabsie.API
             app.UseMvc();
         }
 
+        // TODO: WS support??
         private Task OnMessageReceived(MessageReceivedContext context)
         {
             var accessToken = context.Request.Query["access_token"];

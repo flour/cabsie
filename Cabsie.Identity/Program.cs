@@ -12,7 +12,8 @@ namespace Cabsie.Identity
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .UseUrls("http://localhost:5010", "http://localhost:5011");
+            
+                .UseUrls("http://localhost:5010", "https://localhost:5011")
+                .UseStartup<Startup>();
     }
 }

@@ -30,7 +30,7 @@ namespace Cabsie.Identity
                     },
                     RedirectUris = new List<string> 
                     {
-                        "https://localhost:5001/signin-oidc"
+                        "https://localhost:5001/v1/api/signin-oidc"
                     },
                     PostLogoutRedirectUris = new List<string> 
                     {
